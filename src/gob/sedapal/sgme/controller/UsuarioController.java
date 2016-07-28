@@ -19,8 +19,13 @@ public class UsuarioController {
 	
 	@Autowired
 	protected UsuarioService usuarioService;
-	
-	
+	/**
+	 * Perfil de usuario
+	 * @param model
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/profile.html", method = RequestMethod.GET) 
 	public String profile(Model model, @RequestParam("id")Integer id) throws Exception { 
 		log.info("calling profile " + id);
