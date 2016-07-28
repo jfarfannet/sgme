@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head>
+	<title>Carga de Informaci&oacute;n Acad&eacute;mica</title>
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(function(){
+			//console.log( [[${true}]] );
+			
+			$( "#tabs" ).tabs();
+			
+			$('button.btn-refresh').button({
+				icons: {
+					secondary: "ui-icon-refresh"
+				}
+			});
+			$('button.btn-sync').button({
+				icons: {
+					secondary: "ui-icon-arrowreturn-1-n"
+				}
+			});
+			
+			listar('sedes');
+			
+		});
+	
+		var espanol = {
+	        	"sProcessing":     "Procesando...",
+	        	"sLengthMenu":     "Mostrar _MENU_ registros",
+	        	"sZeroRecords":    "No se encontraron resultados",
+	        	"sEmptyTable":     "Ning\xfan dato disponible en esta tabla",
+	        	"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+	        	"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+	        	"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+	        	"sInfoPostFix":    "",
+	        	"sSearch":         "Buscar:",
+	        	"sUrl":            "",
+	        	"sInfoThousands":  ",",
+	        	"sLoadingRecords": "Cargando...",
+	        	"oPaginate": {
+	        		"sFirst":    "Primero",
+	        		"sLast":     "Último",
+	        		"sNext":     "Siguiente",
+	        		"sPrevious": "Anterior"
+	        	},
+	        	"oAria": {
+	        		"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+	        		"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+	        	}
+	        };
+		
+		var toolsbox = {
+				sSwfPath: [[@{'/js/DataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf'}]],
+				
+				"sRowSelect": "multi",
+				"aButtons": [ {
+					  "sExtends": "select_all",
+					  "sButtonText": "Todos",
+					  "mColumns": "visible"
+					}, {
+					  "sExtends": "select_none",
+					  "sButtonText": "Ninguno",
+					  "mColumns": "visible"
+					}, {
+					  "sExtends": "copy",
+					  "sButtonText": "Copiar",
+					  "mColumns": "visible"
+					}, {
+					  "sExtends": "print",
+					  "sButtonText": "Imprimir",
+					  "mColumns": "visible"
+					}, {
+					  "sExtends": "csv",
+					  "sButtonText": "csv",
+					  "mColumns": "visible"
+					}, {
+					  "sExtends": "xls",
+					  "sButtonText": "xls",
+					  "mColumns": "visible"
+					}, {
+					  "sExtends": "pdf",
+					  "sButtonText": "pdf",
+					  "mColumns": "visible"
+					},/*{
+					  "sExtends": "text",
+					  "sButtonText": "Delete",
+					  "fnClick": function(nButton, oConfig, oFlash) {
+					    deleteerows(deleteadr);
+					  },
+					}, */
+				]
+			
+			};
+	
+		function listar(action, fromtab){
+			
+			var divtable = $('#table-'+action);
+			
+			if(fromtab && $('table.datatable', divtable).length) return;
+			
+			var loader = $('<div/>').preloader({src:[[@{'/js/preloaders/sprites2.png'}]]});
+			
+			$.get( [[@{'/academico/'}]]+action, { "_": $.now() }, function(data){
+		 		
+				divtable.html(data);
+				
+				var table = $('table.datatable', divtable).dataTable({
+			        responsive: true,
+			        language: espanol,
+			        iDisplayLength: 100,
+			        deferRender: true/*,
+			        bProcessing: true,
+			        serverSide: true*/
+			    });
+				
+				var tt = new $.fn.dataTable.TableTools( table, toolsbox );
+				
+			    $( tt.fnContainer() ).css('marginLeft', '10px').css('marginBottom', '0px').insertBefore( $('div.dataTables_filter', divtable) );
+			    
+			    loader.remove();
+			    
+		 	}, 'html').fail(function(data) {
+				var content = $( '<div>'+data.responseText.substring(data.responseText.indexOf("<body>")+6, data.responseText.indexOf("</body>"))+'</div>' ).find('#content');
+		 		showError(content, 800, 'auto');
+			}).always(function(){
+				setTimeout(function(){ loader.remove(); }, 500); //Un retardo por si la respuesta es más rapida que la creacion del gif
+			});
+			
+		}
+		
+		function cargar(action){ 
+			$.confirm("\xBFRealmente desea sincronizar la informaci\xF3n con Pronabec?", function(){
+				
+				$('button').button({ disabled: true });
+				var loader = $('<div/>').preloader({src:[[@{'/js/preloaders/sprites.png'}]]});
+				
+				$.post([[@{'/academico/'}]]+action+'/upload', function(data){
+			 		
+					showSuccess(data, 600);
+					
+			 	}, 'html').fail(function(data) {
+					var content = $( '<div>'+data.responseText.substring(data.responseText.indexOf("<body>")+6, data.responseText.indexOf("</body>"))+'</div>' ).find('#content');
+			 		showError(content, 800, 'auto');
+				}).always(function(){
+					$('button').button({ disabled: false });
+					loader.remove();
+				});
+			});
+		}
+			
+	/*]]>*/
+	</script>
+</head>
+<body>
+	<div layout:fragment="content">
+
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1" onclick="listar('sedes', true)">0 Sedes</a></li>
+				<li><a href="#tabs-2" onclick="listar('carreras', true)">1 Carreras</a></li>
+				<li><a href="#tabs-3" onclick="listar('planestudios', true)">2 Plan de Estudios</a></li>
+				<li><a href="#tabs-4" onclick="listar('cursos', true)">3 Cursos</a></li>
+				<li><a href="#tabs-5" onclick="listar('prerequisitos', true)">4 Prerequisitos</a></li>
+				<li><a href="#tabs-6" onclick="listar('semestres', true)">5 Semestres</a></li>
+				<li><a href="#tabs-7" onclick="listar('matriculas', true)">6 Matriculas</a></li>
+				<li><a href="#tabs-8" onclick="listar('matriculasdetalle', true)">7 Matriculas Detalle</a></li>
+				<li><a href="#tabs-9" onclick="listar('notas', true)">8 Notas</a></li>
+				<li><a href="#tabs-10" onclick="listar('asistencias', true)">9 Asistencias</a></li>
+			</ul>
+			<div id="tabs-1">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('sedes')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('sedes')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-sedes"></div>
+				
+			</div>
+			<div id="tabs-2">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('carreras')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('carreras')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-carreras"></div>
+				
+			</div>
+			<div id="tabs-3">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('planestudios')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('planestudios')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-planestudios"></div>
+				
+			</div>
+			<div id="tabs-4">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('cursos')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('cursos')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-cursos"></div>
+				
+			</div>
+			<div id="tabs-5">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('prerequisitos')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('prerequisitos')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-prerequisitos"></div>
+				
+			</div>
+			<div id="tabs-6">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('semestres')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('semestres')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-semestres"></div>
+				
+			</div>
+			<div id="tabs-7">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('matriculas')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('matriculas')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-matriculas"></div>
+				
+			</div>
+			<div id="tabs-8">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('matriculasdetalle')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('matriculasdetalle')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-matriculasdetalle"></div>
+				
+			</div>
+			<div id="tabs-9">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('notas')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('notas')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-notas"></div>
+				
+			</div>
+			<div id="tabs-10">
+				
+				<div class="controls">
+					<button class="btn-refresh" onclick="listar('asistencias')">Consultar informaci&oacute;n local</button>
+					<button class="btn-sync" onclick="cargar('asistencias')">Cargar informaci&oacute;n a Pronabec</button>
+				</div>
+				
+				<div id="table-asistencias">Esta operaci&oacute;n puede tomar m&aacute;s de un minuto ...</div>
+				
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

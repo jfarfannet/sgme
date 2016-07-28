@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta th:name="${_csrf.parameterName}" th:content="${_csrf.token}"/>
+	<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE" th:inline="text">[[#{app.title}]]</title>
+	<link href="style.css" rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	
+	<link href="" rel="stylesheet" type="text/css" th:href="@{/js/jquery-ui-redmond/jquery-ui.min.css}"/>
+	<script src="" th:src="@{/js/jquery-ui-redmond/jquery-ui.min.js}"></script>
+	
+	<script src="" th:src="@{/js/DataTables/media/js/jquery.dataTables.min.js}"></script>
+	<link href="" rel="stylesheet" type="text/css" th:href="@{/js/DataTables/Plugins/integration/jqueryui/dataTables.jqueryui.css}"/>
+	<script src="" th:src="@{/js/DataTables/Plugins/integration/jqueryui/dataTables.jqueryui.min.js}"></script>
+	<link href="" rel="stylesheet" type="text/css" th:href="@{/js/DataTables/extensions/Responsive/css/dataTables.responsive.css}"/>
+	<script src="" th:src="@{/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js}"></script>
+	<link href="" rel="stylesheet" type="text/css" th:href="@{/js/DataTables/extensions/TableTools/css/dataTables.tableTools.min.css}"/>
+	<script src="" th:src="@{/js/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js}"></script>
+	
+	<script src="" th:src="@{/js/preloaders/jquery.preloaders.js}"></script>
+	
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		//	Special chars for Javascript: http://blog.unijimpe.net/tildes-en-javascript/
+		$(function(){
+			
+			$('button, input[type="submit"], input[type="reset"], input[type="button"], .button').button();
+			
+			// Spring Security CSRF con Ajax: http://stackoverflow.com/questions/27834867/spring-security-csrf-token-not-working-with-ajax
+			//var token = $("meta[name='_csrf']").attr('content');
+			var token = /*[[${_csrf.token}]]*/ 'x';
+		    var header = "X-CSRF-TOKEN";
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        xhr.setRequestHeader(header, token);
+		    });
+			
+		})
+		
+		//Para imprimir un mensaje JSON
+		function showError(message, width, height, close){
+		    return $('<div/>').html(message).dialog({
+		            title: 'Se ha detectado un problema',
+		            dialogClass: 'dialog-ERROR',
+		            modal: true,
+		            resizable: false,
+		            draggable: true,
+		            width: (width)?(($(window).width()<width)?$(window).width()-20:width):300,
+		            height: (height)?height:'auto',
+		            close: function(){
+		            	if(close)close();
+		            	$(this).dialog('destroy');
+						$(this).remove();
+		            }
+		    });
+		}
+		function showSuccess(message, width, height){
+		    return $('<div/>').html(message).dialog({
+		            title: 'Proceso satisfactorio',
+		            dialogClass: 'dialog-SUCCESS',
+		            modal: true,
+		            resizable: false,
+		            draggable: true,
+		            width: (width)?(($(window).width()<width)?$(window).width()-20:width):300,
+		            height: (height)?height:'auto',
+	   	            close: function(){
+	   	            	if(close)close();
+	   	            	$(this).dialog('destroy');
+	   					$(this).remove();
+	   	            }
+		    });
+		}
+		
+		//Alert
+		window.alert = function(message){
+		    $(document.createElement('div'))
+		        .attr({title: 'Alerta', 'class': 'alert'})
+		        .html(message)
+		        .dialog({
+		        	dialogClass: 'ui-dialog-alert',
+		            buttons: {OK: function(){$(this).dialog('close');}},
+		            close: function(){$(this).dialog('destroy'); $(this).remove();},
+		            draggable: true,
+		            modal: true,
+		            resizable: false,
+		            width: 'auto'
+		        });
+		};
+		
+		//Confirm jquery function by ebc
+		(function( $ ) {
+		/*window.confirm =*/ $.confirm = function (message, callback){
+		    $(document.createElement('div'))
+		        .attr({title: 'Conirmaci\xF3n', 'class': 'alert'})
+		        .html(message)
+		        .dialog({
+		        	dialogClass: 'ui-dialog-alert',
+		            buttons: {
+		            	OK: function(){$(this).dialog('close'); if(callback && $.isFunction(callback))callback();},
+		            	Cancel: function(){$(this).dialog('close');}
+		        	},
+		            close: function(){$(this).dialog('destroy'); $(this).remove();},
+		            draggable: true,
+		            modal: true,
+		            resizable: false,
+		            width: 'auto'
+		        });
+		};
+		}( jQuery ));
+	/*]]>*/
+	</script>
+</head>
+<body>
+
+	<div id="header" th:fragment="header">
+	    <img src="logo.png" height="60" th:src="@{/logo.png}"/>
+	    <div class="welcome" th:if="${session.user != null}" th:inline="text">Bienvenido [[${session.user.name}]]</div>
+	</div>
+	
+	<div id="menu" th:fragment="menu">
+	    <ul>
+	        <li><a href="/" th:href="@{/}">Inicio</a></li>
+	    </ul>
+	</div>
+	
+	<div id="content" layout:fragment="content">
+
+	</div>
+	
+	<div id="footer" th:fragment="footer">
+	    <span th:text="|Todos los Derechos Reservados &copy; ${#calendars.format(#calendars.createNow(),'yyyy')}|">Todos los Derechos Reservados &copy; 2015</span>
+	</div>
+
+</body>
+</html>

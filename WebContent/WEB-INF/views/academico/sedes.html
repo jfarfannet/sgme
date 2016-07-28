@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div th:fragment="content">
+	
+		<table class="datatable order-column stripe hover">
+			<thead>
+				<tr>
+					<th>C&oacute;digo</th>
+					<th>Denominaci&oacute;n</th>
+					<th>Ubicaci&oacute;n</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+
+			<!-- tfoot>
+				<tr>
+					<th>C&oacute;digo</th>
+					<th>Denominaci&oacute;n</th>
+					<th>Ubicaci&oacute;n</th>
+					<th>&nbsp;</th>
+				</tr>
+			</tfoot-->
+
+			<tbody>
+				<tr th:each="sede : ${sedes}">
+					<td th:text="${sede.codigo}">100</td>
+					<td th:text="${sede.denominacion}">L</td>
+					<td th:text="${sede.ubicacion}">Lima-Centro</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+</body>
+</html>

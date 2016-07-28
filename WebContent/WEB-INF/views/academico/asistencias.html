@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div th:fragment="content">
+	
+		<table class="datatable order-column stripe hover">
+			<thead>
+				<tr>
+					<th>CodigoCurso</th>
+					<th>DescripcionCurso</th>
+					<th>NroDni</th>
+					<th>CodAlumno</th>
+					<th>DateTimeInicio</th>
+					<th>DateTimeTermino</th>
+					<th>Opcion</th>
+					<th>Tipo</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="asistencia : ${asistencias}">
+					<td th:text="${asistencia.codcurso}"></td>
+					<td th:text="${asistencia.descripcion}"></td>
+					<td th:text="${asistencia.dni}"></td>
+					<td th:text="${asistencia.codalumno}"></td>
+					<td th:text="${asistencia.fecinicio}"></td>
+					<td th:text="${asistencia.fecfin}"></td>
+					<td th:text="${asistencia.opcion}"></td>
+					<td th:text="${asistencia.tipo}"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+</body>
+</html>

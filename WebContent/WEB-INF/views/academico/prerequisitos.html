@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div th:fragment="content">
+	
+		<table class="datatable order-column stripe hover">
+			<thead>
+				<tr>
+					<th>CodigoCurso</th>
+					<th>CodigoCursoPrerequisito</th>
+					<th>CodigoPlanEstudio</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="prerequisito : ${prerequisitos}">
+					<td th:text="${prerequisito.codcurso}"></td>
+					<td th:text="${prerequisito.codprerequisito}"></td>
+					<td th:text="${prerequisito.codplanestudio}"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+</body>
+</html>

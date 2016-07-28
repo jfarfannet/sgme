@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta th:name="${_csrf.parameterName}" th:content="${_csrf.token}"/>
+	<title th:inline="text">[[#{app.title}]] - Ingreso al sistema</title>
+	<link href="style.css" rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(function(){
+			
+		});
+	/*]]>*/
+	</script>
+</head>
+<body>
+
+	<div id="header" th:fragment="header">
+	    <img src="logo.png" height="60" th:src="@{/logo.png}"/>
+	</div>
+	
+	<div id="content">
+
+		<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+			<div class="flash-message">Login error: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" /></div>
+			<c:remove scope="session" var="SPRING_SECURITY_LAST_EXCEPTION"/>
+		</c:if>
+
+		<c:if test="${param.error != null}"> <!-- <form-login authentication-failure-url : se envia el parametro error -->
+			<div class="flash-message">Usuario y/o clave incorrecta</div>
+		</c:if>
+
+		<div class="login-div">
+			<form action="login.html" method='POST' class="ligthform" th:action="@{/authenticate.html}">
+				<fieldset>
+                    <legend>Ingreso al Sistema</legend>
+                    
+                    <input type="text" name="username" size="20" maxlength="50" required="required" placeholder="Ingrese usuario" autocomplete="off"/>
+                    
+                    <input type="password" name="password" size="20" maxlength="50" placeholder="Ingrese clave"/>
+                    
+                    <input type="submit" value="Ingresar"/>
+                    
+					<sec:csrfInput/>
+					
+				</fieldset>
+			</form>
+		</div>
+	
+	</div>
+	
+	<div id="footer" th:fragment="footer">
+	    <span th:text="|Todos los Derechos Reservados &copy; ${#calendars.format(#calendars.createNow(),'yyyy')}|">Todos los Derechos Reservados &copy; 2015</span>
+	</div>
+	
+</body>
+</html>

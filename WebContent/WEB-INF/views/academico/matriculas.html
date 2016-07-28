@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div th:fragment="content">
+	
+		<table class="datatable order-column stripe hover">
+			<thead>
+				<tr>
+					<th>CodAlumno</th>
+					<th>CodMatricula</th>
+					<th>CodSemestre</th>
+					<th>NroDni</th>
+					<th>FechaMatricula</th>
+					<th>IdCarrera</th>
+					<th>CodigoPlan</th>
+					<th>CodSede</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="matricula : ${matriculas}">
+					<td th:text="${matricula.codalumno}"></td>
+					<td th:text="${matricula.codmatricula}"></td>
+					<td th:text="${matricula.codsemestre}"></td>
+					<td th:text="${matricula.dni}"></td>
+					<td th:text="${matricula.fecha}"></td>
+					<td th:text="${matricula.codcarrera}"></td>
+					<td th:text="${matricula.codplanestudio}"></td>
+					<td th:text="${matricula.sede}"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+</body>
+</html>

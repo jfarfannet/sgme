@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div th:fragment="content">
+	
+		<table class="datatable order-column stripe hover">
+			<thead>
+				<tr>
+					<th>C_CodMatricula</th>
+					<th>C_CodigoCurso</th>
+					<th>C_Condicion</th>
+					<th>N_Nota</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="nota : ${notas}">
+					<td th:text="${nota.codmatricula}"></td>
+					<td th:text="${nota.codcurso}"></td>
+					<td th:text="${nota.condicion}"></td>
+					<td th:text="${nota.nota}"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+</body>
+</html>

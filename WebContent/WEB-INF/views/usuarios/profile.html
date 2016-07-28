@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div layout:fragment="content">
+	
+		<label>Nombre:</label>
+		<span th:text="${usuario.nombre}"></span>
+		<br/>
+		
+		<label>Apellido Paterno:</label>
+		<span th:text="${usuario.apellidoPaterno}"></span>
+		<br/>
+		
+		<label>Apellido Materno:</label>
+		<span th:text="${usuario.apellidoMaterno}"></span>
+		<br/>
+		
+		
+	</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+PRONABEC
+http://aplicaciones.pronabec.gob.pe/SeleccionIes2015/Account/Login?ReturnUrl=/SeleccionIes2015/Elegible
+06285725
+Marcelo99
+
+Notas:
+----------------------------------------------------------------------
+Sedes: Lima y Trujillo
+8 Carreras (excepto avionica)
++ carreras de trujillo	(Aldo Corcuera)
+planes de estudio ( al semestre)
+asistecnias y notas	(Roberto Molina)  (Que info y cuando)
+----------------------------------------------------------------------
+
+Spring:
+http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/
+
+Spring Batch:
+http://docs.spring.io/spring-batch/reference/htmlsingle/
+
+Spring Security:
+http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
+
+Google SingIn & Spring Security:
+http://blogs.isostech.com/spring-2/adding-google-authentication-spring-security-application/
+
+* Recuperar lista de objetos RestFul
+new GenericType<List<Destination>>() {}
+https://jersey.java.net/documentation/latest/user-guide.html#client
+
+* Generar automaticamente cliente RestFul con JAX-WS
+wsimport -s src -d bin http://localhost:8080/webservice/ExampleWSService?wsdl
+http://javaeenotes.blogspot.com/2010/10/web-service-client-with-jax-ws-in.html
+
+* JAX-RS Rest Client ejemplos
+http://www.hascode.com/2013/12/jax-rs-2-0-rest-client-features-by-example/
+
+* Obtener cookie de WebService:
+https://docs.oracle.com/cd/E16281_01/P6_V7_WebServicesDocumentation/ReferenceManual/Reference_material/Logging_into_Web_Services.htm
+
+* JSON to Java Object
+User user = new ObjectMapper().readValue(new File("c:\\user.json"), User.class);
+http://www.mkyong.com/java/how-to-convert-java-object-to-from-json-jackson/
+
+* JSON Unmarshall to Collection
+List<MyDto> asList = mapper.readValue(jsonArray, List.class);
+http://www.baeldung.com/jackson-collection-array
+
+* Caracteres especiales en Javascript (tildes, etc)
+alert("\xa1\xa1\xa1Atenci\xf3n Per\xfa!!!");
+http://blog.unijimpe.net/tildes-en-javascript/
+
+* Escapar tags html
+String nohtml = sb.toString().replaceAll("\\<.*?>","");
+http://www.rgagnon.com/javadetails/java-0424.html
+
+* Escape & Unescape
+String results = StringEscapeUtils.escapeJava(str);
+http://www.avajava.com/tutorials/lessons/how-do-i-escape-a-string-for-java.html
+

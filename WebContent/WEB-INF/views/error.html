@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head>
+	<title>Error en el sistema</title>
+	<script type="text/javascript" th:inline="javascript">
+		$(function(){
+
+			$('button.back').button({
+				icons: {
+					primary: "ui-icon-seek-prev"
+				}
+			});
+			$('button.detail').button({
+				icons: {
+					primary: "ui-icon-plus",
+					secondary: "ui-icon-triangle-1-s"
+				}
+			});
+			$('button.notify').button({
+				icons: {
+					primary: "ui-icon-mail-closed"
+				}
+			});
+			
+		})
+	</script>
+</head>
+<body>
+	<div layout:fragment="content">
+	
+		<div id="error-block">
+			<div class="eb-header" th:inline="text">
+				[[#{app.title}]] ha reportado un error inesperado en el sistema
+			</div>
+			<div class="eb-body">
+				<div class="eb-message" th:text="${exception.message}">Descripci&oacute;n del error</div>
+				<div class="eb-info">
+					<p><b>URL:</b> <span th:text="${#httpServletRequest.method + ' ' + #httpServletRequest.requestURL + ((#httpServletRequest.queryString!=null)?'?' + #httpServletRequest.queryString:'')}">GET http://www.domain.com/webapp/moule/index.html?var=foo</span></p>
+					<p><b>Usuario:</b> <span th:text="${#httpServletRequest.userPrincipal}">ebenites</span></p>
+			        <p><b>Fecha:</b> <span th:text="${#calendars.format(#calendars.createNow(),'dd-MM-yyyy HH:mm:ss')}">Viernes, 08 de Mayo de 2015, 20:10:30</span></p>
+			        <p><b>Navegador:</b> <span th:text="${#httpServletRequest.getHeader('User-Agent')}">Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/5.0)</span></p>
+			        <p><b>Session:</b> <span th:text="${#httpServletRequest.session.id}">59C3773ECA8FED76E4B2BCCE0F0C09CE</span></p>
+					<p><b>IP:</b> <span th:text="${#httpServletRequest.getRemoteHost()}">127.0.0.1</span></p>
+			        <p><b>Detalle T&eacute;cnico:</b> <span class="eb-detail" th:text="${exception}">java.lang.Exception: Descripci&oacute;n del error</span></p>
+			    </div>
+				<div class="eb-commands">
+					<button class="back" onclick="history.back()">Regresar</button>
+					<button class="detail" onclick="$('#error-block .eb-trace').toggle();" th:if="${exception!=null}">Ver detalles</button>
+					<button class="notify">Informar a soporte</button>
+				</div>
+				<div class="eb-trace" th:if="${exception!=null}">
+					<p><b>Excepci&oacute;n:</b></p>
+					<p class="code"><span class="eb-detail" th:text="${exception}">java.lang.Exception: Descripci&oacute;n del error</span></p>
+					<p><b>Posici&oacute;n:</b> <span th:text="${exception.stackTrace[0]}">edu.tecsup.pronabec.controller.AcademicoController.index(AcademicoController.java:29)</span></p>
+					<ul class="code">
+						<li><b>Class:</b> <span th:text="${exception.stackTrace[0].className}">edu.tecsup.pronabec.controller.AcademicoController</span></li>
+						<li><b>Method:</b> <span th:text="${exception.stackTrace[0].methodName}">index</span>()</li>
+						<li><b>Line:</b> <span th:text="${exception.stackTrace[0].lineNumber}">29</span></li>
+					</ul>
+					<p><b>Stack Trace:</b></p>
+					<ul class="code">
+						<li th:each="stack : ${exception.stackTrace}" th:text="${stack}">edu.tecsup.pronabec.controller.AcademicoController.index(AcademicoController.java:29)</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+	</div>	
+</body>
+</html>

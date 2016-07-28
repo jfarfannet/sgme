@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div th:fragment="content">
+	
+		<table class="datatable order-column stripe hover">
+			<thead>
+				<tr>
+					<th>CodigoCarrera</th>
+					<th>CodigoPlanEstudio</th>
+					<th>Descripcion</th>
+					<th>CreditosObligatorios</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="plan : ${planestudios}">
+					<td th:text="${plan.codcarrera}"></td>
+					<td th:text="${plan.codigo}"></td>
+					<td th:text="${plan.nombre}"></td>
+					<td th:text="${plan.creditos}"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+</body>
+</html>
