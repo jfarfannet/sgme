@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<body>
+	<div layout:fragment="content">
+	
+		<table class="datatable order-column stripe hover">
+			<thead>
+				<tr>
+					<th>IDRol</th>
+					<th>Descripcion</th>
+					<th>Estado</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="rol: ${roles}">
+					<td th:text="${rol.idrol}"></td>
+					<td th:text="${rol.descrol}"></td>
+					<td th:text="${rol.estado}"></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+</body>
+</html>
