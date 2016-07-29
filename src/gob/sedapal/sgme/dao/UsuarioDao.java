@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
+import gob.sedapal.sgme.domain.Sede;
 import gob.sedapal.sgme.domain.Usuario;
 
 @Repository
@@ -49,4 +50,26 @@ protected static Logger log = Logger.getLogger(UsuarioDao.class);
 		
 		return user;
 	}
+	
+	public List<Usuario> listarUsuarios(){
+		log.info("calling listarUsuarios: ");
+		
+		String sql = "SELECT * FROM usuario";
+		
+		List<Usuario> lista = jdbcTemplate.query(sql, new RowMapper<Usuario>() {
+            public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException{
+            	Usuario vo = new Usuario();
+            	vo.setIdUsuario(rs.getInt("idUsuario"));
+        		vo.setNombre(rs.getString("nombre"));
+        		vo.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                return vo;
+            }
+        });
+		
+		log.info(lista);
+		
+		return lista;
+	}
+	
+	
 }
