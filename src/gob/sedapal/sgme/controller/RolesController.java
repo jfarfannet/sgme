@@ -24,7 +24,8 @@ public class RolesController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model) throws Exception { 
 		log.info("calling index");
-		
+		String nom="james";
+		model.addAttribute("nom", nom);
 		return "roles/index";
 	}
 	
@@ -36,6 +37,6 @@ public class RolesController {
 		
 		model.addAttribute("roles", roles);
 				
-		return "roles/listar :: content";
+		return "roles/listar";
 	}
 }

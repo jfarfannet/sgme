@@ -14,10 +14,10 @@
 			</thead>
 
 			<tbody>
-				<tr th:each="rol: ${roles}">
-					<td th:text="${rol.idrol}"></td>
-					<td th:text="${rol.descrol}"></td>
-					<td th:text="${rol.estado}"></td>
+				<tr th:each="i: ${roles}">
+					<td th:text="${i.idRol}"></td>
+					<td th:text="${i.descRol}"></td>
+					<td th:text="${i.estado}"></td>
 				</tr>
 			</tbody>
 		</table>
